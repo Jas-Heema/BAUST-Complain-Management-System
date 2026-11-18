@@ -1,9 +1,12 @@
 @extends('layouts.app')
 @section('title', 'Log in')
 @section('content')
-    <div style="max-width: 490px; margin: 30px auto">
-        <div class="card">
-            <h1 style="font-size: 26px">Welcome back</h1>
+    <div class="auth-shell">
+        <div class="card auth-card">
+            <div class="auth-header">
+                <div class="auth-icon" aria-hidden="true">B</div>
+                <h1>Welcome back</h1>
+            </div>
             <p class="muted">Log in to the BAUST Complaint Management System.</p>
             <form method="POST" action="{{ route('login.store') }}">
                 @csrf
