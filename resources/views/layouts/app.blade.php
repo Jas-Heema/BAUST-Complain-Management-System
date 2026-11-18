@@ -24,8 +24,10 @@
         }
         body {
             margin: 0;
-            background: var(--bg);
-            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top right, rgba(49, 93, 155, 0.08), transparent 25rem),
+                var(--bg);
+            font-family: Inter, Arial, Helvetica, sans-serif;
             color: var(--text);
             line-height: 1.55;
         }
@@ -42,6 +44,8 @@
             position: sticky;
             top: 0;
             z-index: 5;
+            box-shadow: 0 2px 12px rgba(35, 60, 100, 0.04);
+            backdrop-filter: blur(12px);
         }
         .nav {
             max-width: 1160px;
@@ -63,9 +67,13 @@
         .brand-mark {
             background: var(--blue);
             color: #fff;
-            border-radius: 10px;
-            padding: 7px 10px;
+            border-radius: 11px;
+            width: 38px;
+            height: 38px;
+            display: inline-grid;
+            place-items: center;
             font-weight: bold;
+            box-shadow: 0 5px 12px rgba(49, 93, 155, 0.22);
         }
         .navlinks {
             display: flex;
@@ -76,6 +84,10 @@
         .navlinks a {
             color: #44536a;
             font-size: 14px;
+            transition: color 160ms ease;
+        }
+        .navlinks a:not(.btn):hover {
+            color: var(--blue);
         }
         .navform {
             display: inline;
