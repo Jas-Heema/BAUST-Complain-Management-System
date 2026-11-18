@@ -12,8 +12,8 @@
                 @csrf
                 <div class="form-grid">
                     <div class="field">
-                        <label for="student_id">Student ID</label
-                        ><input
+                        <label for="student_id">Student ID</label>
+                        <input
                             id="student_id"
                             name="student_id"
                             value="{{ old('student_id') }}"
@@ -22,12 +22,12 @@
                         />
                     </div>
                     <div class="field">
-                        <label for="name">Full name</label
-                        ><input id="name" name="name" value="{{ old('name') }}" required maxlength="120" />
+                        <label for="name">Full name</label>
+                        <input id="name" name="name" value="{{ old('name') }}" required maxlength="120" />
                     </div>
                     <div class="field">
-                        <label for="department">Department</label
-                        ><input
+                        <label for="department">Department</label>
+                        <input
                             id="department"
                             name="department"
                             value="{{ old('department', 'CSE') }}"

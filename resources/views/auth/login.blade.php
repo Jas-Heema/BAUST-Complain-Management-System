@@ -11,8 +11,8 @@
             <form method="POST" action="{{ route('login.store') }}">
                 @csrf
                 <div class="field">
-                    <label for="email">Email address</label
-                    ><input
+                    <label for="email">Email address</label>
+                    <input
                         id="email"
                         type="email"
                         name="email"
