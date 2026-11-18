@@ -9,9 +9,9 @@
                     Please provide accurate details so the appropriate authority can review your concern.
                 </p>
             </div>
-            <a href="{{ route('complaints.index') }}">My complaints</a>
+            <a class="btn secondary" href="{{ route('complaints.index') }}">My complaints</a>
         </div>
-        <div class="card">
+        <div class="card form-card">
             <form method="POST" action="{{ route('complaints.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="field">

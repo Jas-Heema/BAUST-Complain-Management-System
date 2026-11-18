@@ -290,6 +290,17 @@
             min-height: 130px;
             resize: vertical;
         }
+        .form-card {
+            border-top: 4px solid var(--blue);
+            padding: 26px;
+        }
+        .form-card .field {
+            margin-bottom: 20px;
+        }
+        .form-card input[type='file'] {
+            padding: 8px;
+            background: #fafdff;
+        }
         .field input:focus,
         .field select:focus,
         .field textarea:focus {
