@@ -176,10 +176,21 @@
             font-size: 14px;
             cursor: pointer;
             text-decoration: none;
+            transition:
+                background 160ms ease,
+                border-color 160ms ease,
+                transform 160ms ease,
+                box-shadow 160ms ease;
         }
         .btn:hover {
             background: var(--blue-dark);
             text-decoration: none;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(49, 93, 155, 0.16);
+        }
+        :focus-visible {
+            outline: 3px solid rgba(49, 93, 155, 0.25);
+            outline-offset: 3px;
         }
         .btn.secondary {
             background: #fff;
@@ -485,6 +496,22 @@
             }
             .hero h1 {
                 font-size: 25px;
+            }
+            .auth-card,
+            .form-card {
+                padding: 20px;
+            }
+            .navlinks {
+                width: 100%;
+                gap: 12px;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
