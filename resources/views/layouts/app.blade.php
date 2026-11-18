@@ -111,6 +111,34 @@
             border-radius: 18px;
             padding: 42px;
             margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero:after {
+            content: '';
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            right: -70px;
+            bottom: -120px;
+            border-radius: 50%;
+            background: rgba(49, 93, 155, 0.08);
+        }
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+        .step-mark {
+            width: 42px;
+            height: 42px;
+            display: inline-grid;
+            place-items: center;
+            margin-bottom: 14px;
+            border-radius: 12px;
+            background: var(--blue-soft);
+            color: var(--blue-dark);
+            font-weight: 800;
+            font-size: 12px;
         }
         h1,
         h2,

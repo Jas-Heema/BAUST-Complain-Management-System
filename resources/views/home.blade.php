@@ -5,7 +5,7 @@
         <p class="small" style="font-weight: 800; letter-spacing: 0.12em; color: #315d9b">
             BANGLADESH ARMY UNIVERSITY OF SCIENCE AND TECHNOLOGY
         </p>
-        <h1>A clearer way to raise and track complaints.</h1>
+        <h1 style="max-width: 700px">A clearer way to raise and track complaints.</h1>
         <p class="muted" style="max-width: 650px; font-size: 16px">
             Submit university-related concerns through one organized platform. Follow progress, review administrative
             remarks, and keep your complaint reference number in one place.
@@ -21,19 +21,23 @@
     </section>
     <div class="two grid">
         <div class="card">
-            <h3>01 · Submit</h3>
+            <div class="step-mark" aria-hidden="true">01</div>
+            <h3>Submit</h3>
             <p class="muted">Provide a title, description, category, incident date, and optional evidence.</p>
         </div>
         <div class="card">
-            <h3>02 · Route</h3>
+            <div class="step-mark" aria-hidden="true">02</div>
+            <h3>Route</h3>
             <p class="muted">Your complaint is assigned to the responsible university authority by category.</p>
         </div>
         <div class="card">
-            <h3>03 · Track</h3>
+            <div class="step-mark" aria-hidden="true">03</div>
+            <h3>Track</h3>
             <p class="muted">Use your unique reference number and dashboard to check the current status.</p>
         </div>
         <div class="card">
-            <h3>04 · Resolve</h3>
+            <div class="step-mark" aria-hidden="true">04</div>
+            <h3>Resolve</h3>
             <p class="muted">Authorized administrators record status updates and remarks in the complaint history.</p>
         </div>
     </div>
