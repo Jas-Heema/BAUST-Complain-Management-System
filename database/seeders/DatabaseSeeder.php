@@ -2,24 +2,49 @@
 
 namespace Database\Seeders;
 
+use App\Models\ComplaintCategory;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $admins = [
+            ['name' => 'CSE Department Head', 'email' => 'cse@baust.edu.bd', 'role' => 'cse_admin'],
+            ['name' => 'Hall Provost', 'email' => 'hall@baust.edu.bd', 'role' => 'hall_admin'],
+            ['name' => 'Chief Librarian', 'email' => 'library@baust.edu.bd', 'role' => 'library_admin'],
+            ['name' => 'University Proctor', 'email' => 'proctor@baust.edu.bd', 'role' => 'proctor'],
+            ['name' => 'System Administrator', 'email' => 'super@baust.edu.bd', 'role' => 'super_admin'],
+        ];
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        foreach ($admins as $admin) {
+            User::updateOrCreate(
+                ['email' => $admin['email']],
+                [
+                    'name' => $admin['name'],
+                    'password' => 'Password123!',
+                    'role' => $admin['role'],
+                    'is_active' => true,
+                ]
+            );
+        }
+
+        $categories = [
+            ['name' => 'Academic', 'description' => 'Academic and course-related matters', 'assigned_role' => 'cse_admin'],
+            ['name' => 'Laboratory', 'description' => 'Laboratory equipment and facilities', 'assigned_role' => 'cse_admin'],
+            ['name' => 'Classroom', 'description' => 'Classroom and teaching facilities', 'assigned_role' => 'cse_admin'],
+            ['name' => 'Varsity / CSE Department', 'description' => 'Department-specific university matters', 'assigned_role' => 'cse_admin'],
+            ['name' => 'Administrative', 'description' => 'General university administration', 'assigned_role' => 'proctor'],
+            ['name' => 'Transportation', 'description' => 'University transportation services', 'assigned_role' => 'proctor'],
+            ['name' => 'Hostel / Hall', 'description' => 'Residential and hall facilities', 'assigned_role' => 'hall_admin'],
+            ['name' => 'Campus Facilities', 'description' => 'General campus facilities', 'assigned_role' => 'proctor'],
+            ['name' => 'Library', 'description' => 'Library services and facilities', 'assigned_role' => 'library_admin'],
+            ['name' => 'Other', 'description' => 'Other campus-related complaints', 'assigned_role' => 'proctor'],
+        ];
+
+        foreach ($categories as $category) {
+            ComplaintCategory::updateOrCreate(['name' => $category['name']], $category + ['is_active' => true]);
+        }
     }
 }
