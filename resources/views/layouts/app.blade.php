@@ -249,6 +249,17 @@
             border: 1px solid var(--line);
             border-radius: 14px;
             padding: 19px;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--blue);
         }
         .stat strong {
             font-size: 27px;
@@ -258,6 +269,10 @@
         .stat span {
             font-size: 13px;
             color: var(--muted);
+        }
+        .stat small {
+            display: block;
+            margin-top: 4px;
         }
         .form-grid {
             display: grid;
@@ -334,6 +349,12 @@
             border-collapse: collapse;
             width: 100%;
             font-size: 13px;
+        }
+        tbody tr {
+            transition: background 150ms ease;
+        }
+        tbody tr:hover {
+            background: #fafcff;
         }
         th,
         td {

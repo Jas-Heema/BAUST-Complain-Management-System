@@ -10,10 +10,10 @@
         <a class="btn" href="{{ route('complaints.create') }}">＋ Submit complaint</a>
     </div>
     <div class="grid">
-        <div class="stat"><span>Total complaints</span><strong>{{ $counts['total'] }}</strong></div>
-        <div class="stat"><span>Pending</span><strong>{{ $counts['pending'] }}</strong></div>
-        <div class="stat"><span>In progress</span><strong>{{ $counts['progress'] }}</strong></div>
-        <div class="stat"><span>Resolved</span><strong>{{ $counts['resolved'] }}</strong></div>
+        <div class="stat"><span>Total complaints</span><strong>{{ $counts['total'] }}</strong><small class="muted">All submitted records</small></div>
+        <div class="stat"><span>Pending</span><strong>{{ $counts['pending'] }}</strong><small class="muted">Awaiting review</small></div>
+        <div class="stat"><span>In progress</span><strong>{{ $counts['progress'] }}</strong><small class="muted">Currently being handled</small></div>
+        <div class="stat"><span>Resolved</span><strong>{{ $counts['resolved'] }}</strong><small class="muted">Completed cases</small></div>
     </div>
     <div class="card" style="margin-top: 22px">
         <div class="section-head">
