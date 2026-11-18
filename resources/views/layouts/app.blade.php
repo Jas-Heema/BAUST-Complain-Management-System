@@ -203,6 +203,39 @@
             box-shadow: 0 4px 16px rgba(35, 60, 100, 0.035);
             margin-bottom: 18px;
         }
+        .auth-shell {
+            max-width: 490px;
+            margin: 32px auto;
+        }
+        .auth-shell-wide {
+            max-width: 650px;
+        }
+        .auth-card {
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 14px 34px rgba(35, 60, 100, 0.09);
+        }
+        .auth-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .auth-header h1 {
+            margin: 0;
+            font-size: 26px;
+        }
+        .auth-icon {
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--blue);
+            color: #fff;
+            font-weight: 800;
+            box-shadow: 0 6px 14px rgba(49, 93, 155, 0.2);
+        }
         .grid {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
