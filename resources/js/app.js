@@ -37,11 +37,23 @@ function initLightbox() {
     const closeBtn = modal.querySelector("#lightbox-close");
     const backdrop = modal.querySelector(".lightbox-backdrop");
 
+    const safeEvidenceUrl = (value) => {
+        if (!value) return "";
+
+        try {
+            const url = new URL(value, window.location.origin);
+            return ["http:", "https:", "blob:"].includes(url.protocol) ? url.href : "";
+        } catch {
+            return "";
+        }
+    };
+
     const openLightbox = (src, title, downloadUrl) => {
-        if (img) img.src = src;
+        const safeSrc = safeEvidenceUrl(src);
+        if (img) img.src = safeSrc;
         if (caption) caption.textContent = title || "Complaint Evidence";
         if (downloadLink) {
-            downloadLink.href = downloadUrl || src;
+            downloadLink.href = safeEvidenceUrl(downloadUrl || src);
             downloadLink.setAttribute("download", title || "evidence");
         }
         modal.classList.add("active");
