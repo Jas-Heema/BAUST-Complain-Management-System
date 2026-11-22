@@ -2,43 +2,40 @@
 @section('title', 'BAUST Complaint Management System')
 @section('content')
     <section class="hero">
-        <p class="small" style="font-weight: 800; letter-spacing: 0.12em; color: #315d9b">
-            BANGLADESH ARMY UNIVERSITY OF SCIENCE AND TECHNOLOGY
+        <p class="small" style="font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase">
+            Bangladesh Army University of Science and Technology
         </p>
-        <h1 style="max-width: 700px">A clearer way to raise and track complaints.</h1>
-        <p class="muted" style="max-width: 650px; font-size: 16px">
-            Submit university-related concerns through one organized platform. Follow progress, review administrative
-            remarks, and keep your complaint reference number in one place.
+        <h1 style="font-size: 32px; margin-top: 8px; margin-bottom: 12px">A clearer way to raise, route, and resolve campus concerns.</h1>
+        <p class="muted" style="max-width: 680px; font-size: 16px; line-height: 1.6">
+            Submit university-related complaints through one centralized platform. Upload evidence, track status in real-time,
+            and review administrative remarks with your unique reference number.
         </p>
-        <div class="inline" style="margin-top: 22px; flex-wrap: wrap">
+        <div class="inline" style="margin-top: 24px; flex-wrap: wrap">
             @guest
-                <a class="btn" href="{{ route('register') }}">Create student account</a
-                ><a class="btn secondary" href="{{ route('login') }}">Log in</a>
+                <a class="btn" href="{{ route('register') }}">Create Student Account</a>
+                <a class="btn secondary" href="{{ route('login') }}">Log In</a>
             @else
-                <a class="btn" href="{{ route('dashboard') }}">Open dashboard</a>
+                <a class="btn" href="{{ route('dashboard') }}">Open Dashboard</a>
             @endguest
         </div>
     </section>
+
     <div class="two grid">
         <div class="card">
-            <div class="step-mark" aria-hidden="true">01</div>
-            <h3>Submit</h3>
-            <p class="muted">Provide a title, description, category, incident date, and optional evidence.</p>
+            <h3 style="color: var(--c-cornflower-blue)">01 · Submit</h3>
+            <p class="muted">Provide details, category, date, and upload supporting photos or documents as evidence.</p>
         </div>
         <div class="card">
-            <div class="step-mark" aria-hidden="true">02</div>
-            <h3>Route</h3>
-            <p class="muted">Your complaint is assigned to the responsible university authority by category.</p>
+            <h3 style="color: var(--c-cornflower-blue)">02 · Route</h3>
+            <p class="muted">Your complaint is automatically assigned to the responsible department head or provost.</p>
         </div>
         <div class="card">
-            <div class="step-mark" aria-hidden="true">03</div>
-            <h3>Track</h3>
-            <p class="muted">Use your unique reference number and dashboard to check the current status.</p>
+            <h3 style="color: var(--c-cornflower-blue)">03 · Track</h3>
+            <p class="muted">Check real-time status updates and notifications directly on your student dashboard.</p>
         </div>
         <div class="card">
-            <div class="step-mark" aria-hidden="true">04</div>
-            <h3>Resolve</h3>
-            <p class="muted">Authorized administrators record status updates and remarks in the complaint history.</p>
+            <h3 style="color: var(--c-cornflower-blue)">04 · Resolve</h3>
+            <p class="muted">Designated university authorities investigate, take corrective action, and post remarks.</p>
         </div>
     </div>
 @endsection

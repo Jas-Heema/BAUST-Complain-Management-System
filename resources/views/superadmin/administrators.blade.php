@@ -1,73 +1,86 @@
 @extends('layouts.app')
-@section('title', 'Administrator accounts')
+@section('title', 'Administrator Accounts | BAUST')
 @section('content')
     <div class="section-head">
         <div>
-            <p class="small">SYSTEM CONFIGURATION</p>
-            <h1>Administrator accounts</h1>
-            <p class="muted">Only the super administrator can create or deactivate administrator accounts.</p>
+            <p class="small" style="font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase">System Configuration</p>
+            <h1>Administrator Accounts</h1>
+            <p class="muted">Create and manage accounts for university administrative authorities.</p>
         </div>
     </div>
+
     <div class="two grid">
         <div class="card">
-            <h2>Create administrator</h2>
+            <h2>Create Administrator</h2>
             <form method="POST" action="{{ route('superadmin.administrators.store') }}">
                 @csrf
-                <div class="field"><label>Name</label><input name="name" required maxlength="120" /></div>
-                <div class="field"><label>Email</label><input type="email" name="email" required /></div>
                 <div class="field">
-                    <label>Role</label
-                    ><select name="role" required>
+                    <label for="admin-name">Full Name</label>
+                    <input id="admin-name" name="name" required maxlength="120" placeholder="e.g. Dr. Md. Rafiqul Islam" />
+                </div>
+                <div class="field">
+                    <label for="admin-email">Official University Email</label>
+                    <input id="admin-email" type="email" name="email" required placeholder="e.g. csehead@baust.edu.bd" />
+                </div>
+                <div class="field">
+                    <label for="admin-role">Administrative Role</label>
+                    <select id="admin-role" name="role" required>
                         @foreach (['cse_admin'=>'CSE Department Head','hall_admin'=>'Hall Provost','library_admin'=>'Chief Librarian','proctor'=>'Proctor','super_admin'=>'Super Administrator'] as $role=>$label)
                             <option value="{{ $role }}">{{ $label }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="field">
-                    <label>Password</label><input type="password" name="password" minlength="8" required />
+                    <label for="admin-pass">Password</label>
+                    <input id="admin-pass" type="password" name="password" minlength="8" required />
                 </div>
                 <div class="field">
-                    <label>Confirm password</label
-                    ><input type="password" name="password_confirmation" minlength="8" required />
+                    <label for="admin-pass-confirm">Confirm Password</label>
+                    <input id="admin-pass-confirm" type="password" name="password_confirmation" minlength="8" required />
                 </div>
-                <button class="btn" type="submit">Create account</button>
+                <button class="btn" type="submit">Create Account</button>
             </form>
         </div>
+
         <div class="card">
-            <h2>Access roles</h2>
-            <p class="muted">
-                CSE Head handles department-related complaints; Hall Provost handles hall complaints; Chief Librarian
-                handles library complaints; Proctor handles other campus complaints. Super Admin manages configuration.
+            <h2>Role Permissions</h2>
+            <p class="muted" style="line-height: 1.6">
+                <strong>CSE Head:</strong> Reviews academic and CSE laboratory/facilities complaints.<br />
+                <strong>Hall Provost:</strong> Manages complaints related to university halls and student hostels.<br />
+                <strong>Chief Librarian:</strong> Manages library book, facility, and account complaints.<br />
+                <strong>University Proctor:</strong> Investigates conduct, transport, and campus-wide matters.<br />
+                <strong>Super Admin:</strong> Full administrative rights over system configuration and user accounts.
             </p>
-            <p class="small">Use strong unique passwords and change all demo credentials before any real deployment.</p>
         </div>
     </div>
-    <div class="card">
-        <h2>Existing administrators</h2>
+
+    <div class="card" style="margin-top: 24px">
+        <h2>Existing Administrators</h2>
         <div class="table-wrap">
             <table>
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Role</th>
-                        <th>Account</th>
+                        <th>Assigned Role</th>
+                        <th>Account Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($administrators as $admin)
                         <tr>
-                            <td>{{ $admin->name }}</td>
+                            <td><strong>{{ $admin->name }}</strong></td>
                             <td>{{ $admin->email }}</td>
-                            <td>{{ $admin->roleLabel() }}</td>
-                            <td>{{ $admin->is_active ? 'Active' : 'Inactive' }}</td>
+                            <td><span class="badge badge-role">{{ $admin->roleLabel() }}</span></td>
+                            <td>
+                                <span class="badge {{ $admin->is_active ? 'badge-active' : 'badge-inactive' }}">
+                                    {{ $admin->is_active ? 'Active' : 'Inactive' }}
+                                </span>
+                            </td>
                             <td>
                                 @if ($admin->id !== auth()->id())
-                                    <form
-                                        method="POST"
-                                        action="{{ route('superadmin.administrators.toggle', $admin) }}"
-                                    >
+                                    <form method="POST" action="{{ route('superadmin.administrators.toggle', $admin) }}">
                                         @csrf
                                         @method('PATCH')
                                         <button
@@ -78,7 +91,7 @@
                                         </button>
                                     </form>
                                 @else
-                                    <span class="small">Current account</span>
+                                    <span class="small" style="font-weight: 700">Current Session</span>
                                 @endif
                             </td>
                         </tr>

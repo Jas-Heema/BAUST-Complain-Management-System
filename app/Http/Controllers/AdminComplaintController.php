@@ -14,7 +14,7 @@ class AdminComplaintController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Complaint::with(['student', 'category', 'assignee']);
+        $query = Complaint::with(['student', 'category', 'assignee', 'attachments']);
         if ($request->user()->role !== 'super_admin') {
             $query->where('assigned_to', $request->user()->id);
         }
