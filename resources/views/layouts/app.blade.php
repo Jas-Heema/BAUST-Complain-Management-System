@@ -5,73 +5,557 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>@yield('title', 'BAUST Complaint Management')</title>
-    <!-- Inline theme script to prevent any flash of wrong/unstyled theme on reload -->
-    <script>
-        (function() {
-            try {
-                var stored = localStorage.getItem('baust-theme');
-                if (stored === 'dark' || stored === 'light') {
-                    document.documentElement.setAttribute('data-theme', stored);
-                } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    document.documentElement.setAttribute('data-theme', 'dark');
-                } else {
-                    document.documentElement.setAttribute('data-theme', 'light');
-                }
-            } catch (e) {
-                document.documentElement.setAttribute('data-theme', 'light');
+    <style>
+        :root {
+            --blue: #315d9b;
+            --blue-dark: #234777;
+            --blue-soft: #eaf2ff;
+            --bg: #f5f7fb;
+            --text: #253247;
+            --muted: #69778b;
+            --line: #e2e8f0;
+            --white: #fff;
+            --green: #e7f7ee;
+            --orange: #fff3dc;
+            --red: #fdecec;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at top right, rgba(49, 93, 155, 0.08), transparent 25rem),
+                var(--bg);
+            font-family: Inter, Arial, Helvetica, sans-serif;
+            color: var(--text);
+            line-height: 1.55;
+        }
+        a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid var(--line);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            box-shadow: 0 2px 12px rgba(35, 60, 100, 0.04);
+            backdrop-filter: blur(12px);
+        }
+        .nav {
+            max-width: 1160px;
+            margin: auto;
+            padding: 14px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+        .brand {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand-mark {
+            background: var(--blue);
+            color: #fff;
+            border-radius: 11px;
+            width: 38px;
+            height: 38px;
+            display: inline-grid;
+            place-items: center;
+            font-weight: bold;
+            box-shadow: 0 5px 12px rgba(49, 93, 155, 0.22);
+        }
+        .navlinks {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+        .navlinks a {
+            color: #44536a;
+            font-size: 14px;
+            transition: color 160ms ease;
+        }
+        .navlinks a:not(.btn):hover {
+            color: var(--blue);
+        }
+        .navform {
+            display: inline;
+        }
+        .navform button {
+            border: 0;
+            background: none;
+            color: #44536a;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .container {
+            max-width: 1160px;
+            margin: 30px auto;
+            padding: 0 22px;
+            min-height: 70vh;
+        }
+        .hero {
+            background: linear-gradient(120deg, #eaf2ff, #f9fbff);
+            border: 1px solid #dce8fb;
+            border-radius: 18px;
+            padding: 42px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero:after {
+            content: '';
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            right: -70px;
+            bottom: -120px;
+            border-radius: 50%;
+            background: rgba(49, 93, 155, 0.08);
+        }
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+        .step-mark {
+            width: 42px;
+            height: 42px;
+            display: inline-grid;
+            place-items: center;
+            margin-bottom: 14px;
+            border-radius: 12px;
+            background: var(--blue-soft);
+            color: var(--blue-dark);
+            font-weight: 800;
+            font-size: 12px;
+        }
+        h1,
+        h2,
+        h3 {
+            line-height: 1.25;
+            margin-top: 0;
+        }
+        h1 {
+            font-size: 30px;
+        }
+        h2 {
+            font-size: 22px;
+        }
+        h3 {
+            font-size: 17px;
+        }
+        .muted,
+        .small {
+            color: var(--muted);
+        }
+        .small {
+            font-size: 13px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            border: 1px solid var(--blue);
+            background: var(--blue);
+            color: #fff !important;
+            border-radius: 9px;
+            padding: 10px 15px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            transition:
+                background 160ms ease,
+                border-color 160ms ease,
+                transform 160ms ease,
+                box-shadow 160ms ease;
+        }
+        .btn:hover {
+            background: var(--blue-dark);
+            text-decoration: none;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(49, 93, 155, 0.16);
+        }
+        :focus-visible {
+            outline: 3px solid rgba(49, 93, 155, 0.25);
+            outline-offset: 3px;
+        }
+        .btn.secondary {
+            background: #fff;
+            color: var(--blue) !important;
+            border-color: #cbd8ec;
+        }
+        .btn.danger {
+            background: #fff;
+            color: #a52d35 !important;
+            border-color: #efc4c7;
+        }
+        .btn.smallbtn {
+            padding: 7px 10px;
+            font-size: 12px;
+        }
+        .card {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 4px 16px rgba(35, 60, 100, 0.035);
+            margin-bottom: 18px;
+        }
+        .auth-shell {
+            max-width: 490px;
+            margin: 32px auto;
+        }
+        .auth-shell-wide {
+            max-width: 650px;
+        }
+        .auth-card {
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 14px 34px rgba(35, 60, 100, 0.09);
+        }
+        .auth-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .auth-header h1 {
+            margin: 0;
+            font-size: 26px;
+        }
+        .auth-icon {
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--blue);
+            color: #fff;
+            font-weight: 800;
+            box-shadow: 0 6px 14px rgba(49, 93, 155, 0.2);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+        }
+        .grid.two {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .stat {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 19px;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--blue);
+        }
+        .stat strong {
+            font-size: 27px;
+            display: block;
+            color: var(--blue-dark);
+        }
+        .stat span {
+            font-size: 13px;
+            color: var(--muted);
+        }
+        .stat small {
+            display: block;
+            margin-top: 4px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+        .field {
+            margin-bottom: 15px;
+        }
+        .field label {
+            display: block;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+        .field input,
+        .field select,
+        .field textarea,
+        .filter input,
+        .filter select {
+            width: 100%;
+            border: 1px solid #d5deea;
+            background: #fff;
+            border-radius: 8px;
+            padding: 11px 12px;
+            font: inherit;
+            color: var(--text);
+        }
+        .field textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+        .form-card {
+            border-top: 4px solid var(--blue);
+            padding: 26px;
+        }
+        .form-card .field {
+            margin-bottom: 20px;
+        }
+        .form-card input[type='file'] {
+            padding: 8px;
+            background: #fafdff;
+        }
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            outline: 2px solid #c5d9ff;
+            border-color: var(--blue);
+        }
+        .error {
+            color: #b4232c;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+        .alert {
+            padding: 12px 15px;
+            border-radius: 9px;
+            margin-bottom: 18px;
+        }
+        .alert.success {
+            background: #eaf8ef;
+            color: #17683b;
+            border: 1px solid #c7ecd3;
+        }
+        .alert.errorbox {
+            background: #fff0f0;
+            color: #9e2930;
+            border: 1px solid #f4cece;
+        }
+        .table-wrap {
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 13px;
+        }
+        tbody tr {
+            transition: background 150ms ease;
+        }
+        tbody tr:hover {
+            background: #fafcff;
+        }
+        th,
+        td {
+            text-align: left;
+            padding: 13px 12px;
+            border-bottom: 1px solid var(--line);
+            vertical-align: top;
+        }
+        th {
+            background: #f8faff;
+            color: #627086;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        tr:last-child td {
+            border-bottom: 0;
+        }
+        .badge {
+            display: inline-block;
+            border-radius: 20px;
+            padding: 4px 9px;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+        .badge.pending {
+            background: var(--orange);
+            color: #94600b;
+        }
+        .badge.progress {
+            background: var(--blue-soft);
+            color: #2456a0;
+        }
+        .badge.resolved {
+            background: var(--green);
+            color: #1f7746;
+        }
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+        .filter {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 17px;
+        }
+        .filter input,
+        .filter select {
+            width: auto;
+            min-width: 160px;
+            padding: 9px;
+        }
+        .timeline {
+            border-left: 2px solid #dbe6f7;
+            margin-left: 7px;
+            padding-left: 20px;
+        }
+        .event {
+            position: relative;
+            padding-bottom: 18px;
+        }
+        .event:before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--blue);
+            left: -26px;
+            top: 6px;
+        }
+        .footer {
+            text-align: center;
+            color: #8490a1;
+            padding: 25px;
+            border-top: 1px solid var(--line);
+            font-size: 12px;
+            background: #fff;
+            margin-top: 35px;
+        }
+        .empty {
+            padding: 30px;
+            text-align: center;
+            color: var(--muted);
+        }
+        .inline {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .pagination {
+            margin-top: 18px;
+        }
+        .pagination nav {
+            display: flex;
+            justify-content: space-between;
+        }
+        @media (max-width: 800px) {
+            .grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
-        })();
-    </script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+            .nav {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+            .hero {
+                padding: 28px;
+            }
+            .form-grid,
+            .grid.two {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 0 14px;
+                margin-top: 20px;
+            }
+            .hero h1 {
+                font-size: 25px;
+            }
+            .auth-card,
+            .form-card {
+                padding: 20px;
+            }
+            .navlinks {
+                width: 100%;
+                gap: 12px;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
 </head>
 <body>
     <header class="topbar">
         <nav class="nav">
-            <a class="brand" href="{{ route('home') }}">
-                <span class="brand-mark">B</span>
-                <span>BAUST <span class="brand-subtitle">| Complaints</span></span>
-            </a>
+            <a class="brand" href="{{ route('home') }}"
+                ><span class="brand-mark">B</span
+                ><span>BAUST <span class="muted" style="font-weight: 400">| Complaints</span></span></a
+            >
             <div class="navlinks">
                 @auth
-                    <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">Dashboard</a>
+                    <a href="{{ route('dashboard') }}">Dashboard</a>
                     @if (auth()->user()->role === 'student')
-                        <a class="{{ request()->routeIs('complaints.*') ? 'active' : '' }}" href="{{ route('complaints.index') }}">My Complaints</a>
-                        <a class="{{ request()->routeIs('complaints.create') ? 'active' : '' }}" href="{{ route('complaints.create') }}">Submit Complaint</a>
+                        <a href="{{ route('complaints.index') }}">My Complaints</a>
+                        <a href="{{ route('complaints.create') }}">Submit Complaint</a>
                     @else
-                        <a class="{{ request()->routeIs('admin.complaints.*') ? 'active' : '' }}" href="{{ route('admin.complaints.index') }}">Assigned Complaints</a>
+                        <a href="{{ route('admin.complaints.index') }}">Assigned Complaints</a>
                     @endif
                     @if (auth()->user()->role === 'super_admin')
-                        <a class="{{ request()->routeIs('superadmin.categories*') ? 'active' : '' }}" href="{{ route('superadmin.categories') }}">Categories</a>
-                        <a class="{{ request()->routeIs('superadmin.administrators*') ? 'active' : '' }}" href="{{ route('superadmin.administrators') }}">Administrators</a>
+                        <a href="{{ route('superadmin.categories') }}">Categories</a>
+                        <a href="{{ route('superadmin.administrators') }}">Administrators</a>
                     @endif
-                    <span class="nav-user">{{ auth()->user()->name }}</span>
+                    <span class="small">{{ auth()->user()->name }}</span>
                     <form class="navform" method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit">Log out</button>
                     </form>
                 @else
-                    <a class="{{ request()->routeIs('login') ? 'active' : '' }}" href="{{ route('login') }}">Log in</a>
-                    <a class="btn smallbtn secondary" href="{{ route('register') }}">Student Register</a>
+                    <a href="{{ route('login') }}">Log in</a
+                    ><a class="btn smallbtn" href="{{ route('register') }}">Student Register</a>
                 @endauth
-                <button
-                    id="theme-toggle"
-                    class="theme-toggle"
-                    type="button"
-                    aria-label="Switch theme"
-                    title="Switch theme"
-                >☾</button>
             </div>
         </nav>
     </header>
-
     <main class="container">
         @if (session('success'))
             <div class="alert success">{{ session('success') }}</div>
         @endif
-        @if (isset($errors) && $errors->any())
+        @if ($errors->any())
             <div class="alert errorbox">
                 <strong>Please correct the following:</strong>
-                <ul style="margin: 6px 0 0; padding-left: 20px">
+                <ul style="margin-bottom: 0">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -80,22 +564,6 @@
         @endif
         @yield('content')
     </main>
-
-    <!-- Global Day/Night Lightbox Modal for Attachment Images -->
-    <div id="image-lightbox" class="lightbox-modal" role="dialog" aria-modal="true" aria-label="Evidence preview">
-        <div class="lightbox-backdrop"></div>
-        <div class="lightbox-panel">
-            <button id="lightbox-close" class="lightbox-close-btn" type="button" aria-label="Close preview">✕</button>
-            <div class="lightbox-img-wrap">
-                <img id="lightbox-image" class="lightbox-img" src="" alt="Evidence preview" />
-            </div>
-            <div class="lightbox-footer">
-                <span id="lightbox-caption" class="lightbox-caption"></span>
-                <a id="lightbox-download" class="btn smallbtn secondary" href="#" download>Download original</a>
-            </div>
-        </div>
-    </div>
-
     <footer class="footer">
         BAUST Complaint Management System · Bangladesh Army University of Science and Technology · © {{ date('Y') }}
     </footer>
