@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class PortalNotification extends Model
 {
     protected $table = 'notifications';
+
     protected $fillable = ['recipient_id', 'complaint_id', 'message', 'read_at'];
 
     protected function casts(): array

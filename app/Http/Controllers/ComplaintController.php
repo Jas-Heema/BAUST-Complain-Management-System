@@ -10,6 +10,7 @@ use App\Models\PortalNotification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ComplaintController extends Controller
@@ -17,7 +18,7 @@ class ComplaintController extends Controller
     public function index(Request $request)
     {
         $query = Complaint::where('student_id', $request->user()->id)
-            ->with(['category', 'assignee']);
+            ->with(['category', 'assignee', 'attachments']);
 
         if ($request->filled('status')) {
             $query->where('status', $request->string('status'));
@@ -28,12 +29,14 @@ class ComplaintController extends Controller
         }
 
         $complaints = $query->latest()->paginate(10)->withQueryString();
+
         return view('complaints.index', compact('complaints'));
     }
 
     public function create()
     {
         $categories = ComplaintCategory::where('is_active', true)->orderBy('name')->get();
+
         return view('complaints.create', compact('categories'));
     }
 
@@ -50,7 +53,7 @@ class ComplaintController extends Controller
         $category = ComplaintCategory::where('is_active', true)->findOrFail($data['category_id']);
         $assignee = User::where('role', $category->assigned_role)->where('is_active', true)->first();
 
-        if (!$assignee) {
+        if (! $assignee) {
             return back()->withInput()->withErrors(['category_id' => 'No active administrator is configured for this category.']);
         }
 
@@ -82,7 +85,7 @@ class ComplaintController extends Controller
             ]);
 
             foreach ($request->file('attachments', []) as $file) {
-                $path = $file->store('complaint-evidence', 'local');
+                $path = $file->store('complaints', 'public');
                 ComplaintAttachment::create([
                     'complaint_id' => $complaint->id,
                     'file_path' => $path,
@@ -102,6 +105,7 @@ class ComplaintController extends Controller
     {
         $this->authorizeComplaint($request, $complaint);
         $complaint->load(['student', 'category', 'assignee', 'history.administrator', 'attachments']);
+
         return view('complaints.show', compact('complaint'));
     }
 
@@ -110,7 +114,12 @@ class ComplaintController extends Controller
         $complaint = $attachment->complaint()->with('category')->firstOrFail();
         $this->authorizeComplaint($request, $complaint);
 
+        if (Storage::disk('public')->exists($attachment->file_path)) {
+            return Storage::disk('public')->download($attachment->file_path, $attachment->original_name);
+        }
+
         abort_unless(Storage::disk('local')->exists($attachment->file_path), 404);
+
         return Storage::disk('local')->download($attachment->file_path, $attachment->original_name);
     }
 

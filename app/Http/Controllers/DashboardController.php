@@ -25,7 +25,8 @@ class DashboardController extends Controller
                 'resolved' => (clone $query)->where('status', 'Resolved')->count(),
             ];
 
-            $complaints = $query->with(['student', 'category', 'assignee'])->latest()->take(8)->get();
+            $complaints = $query->with(['student', 'category', 'assignee', 'attachments'])->latest()->take(8)->get();
+
             return view('dashboard.admin', compact('counts', 'complaints'));
         }
 
@@ -36,7 +37,7 @@ class DashboardController extends Controller
             'progress' => (clone $query)->where('status', 'In Progress')->count(),
             'resolved' => (clone $query)->where('status', 'Resolved')->count(),
         ];
-        $complaints = $query->with(['category', 'assignee'])->latest()->take(8)->get();
+        $complaints = $query->with(['category', 'assignee', 'attachments'])->latest()->take(8)->get();
         $notifications = PortalNotification::where('recipient_id', $user->id)->latest()->take(5)->get();
 
         return view('dashboard.student', compact('counts', 'complaints', 'notifications'));

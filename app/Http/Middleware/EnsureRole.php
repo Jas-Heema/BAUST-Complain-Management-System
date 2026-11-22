@@ -12,7 +12,7 @@ class EnsureRole
     {
         $user = $request->user();
 
-        if (!$user || !$user->is_active || !in_array($user->role, $roles, true)) {
+        if (! $user || ! $user->is_active || ! in_array($user->role, $roles, true)) {
             abort(403, 'You are not authorized to access this page.');
         }
 

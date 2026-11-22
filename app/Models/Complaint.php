@@ -43,6 +43,16 @@ class Complaint extends Model
         return $this->hasMany(ComplaintAttachment::class);
     }
 
+    public function firstImageAttachment(): ?ComplaintAttachment
+    {
+        return $this->attachments->first(fn (ComplaintAttachment $attachment) => $attachment->isImage());
+    }
+
+    public function hasAttachments(): bool
+    {
+        return $this->attachments->isNotEmpty();
+    }
+
     public function getStatusClassAttribute(): string
     {
         return match ($this->status) {
